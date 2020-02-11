@@ -57,7 +57,7 @@ julia>  foreach(x -> println(x^2), nvv)
 ```
 
 ## What is this useful for?
-```NamedViewVectors``` are useful for composing models together on the fly. The main targets are differential equations and optimization, but really anything that needs requires flat vectors is fair game (as long as it is written in Julia all the way down).
+```NamedViewVectors``` are useful for composing models together on the fly. The main targets are differential equations and optimization, but really anything that requires flat vectors is fair game (as long as it is written in Julia all the way down).
 
 ### Differential equation example
 Example taken from:
