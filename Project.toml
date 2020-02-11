@@ -1,0 +1,4 @@
+name = "NamedViewVectors"
+uuid = "1e821866-838f-48cd-bd97-fe3dadd20423"
+authors = ["Jonnie Diegelman <47193959+jonniedie@users.noreply.github.com>"]
+version = "0.1.0"
