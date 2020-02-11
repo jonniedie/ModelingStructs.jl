@@ -89,8 +89,6 @@ lorenz_p = (σ=1.0, ρ=1.0)
 lotka_p = (α=1.0, γ=3.1, δ=0.5)
 p = (β=1.0, lorenz=lorenz_p, lotka=lotka_p)
 
-prange = 0 : 0.01 : 10
-
 tspan = (0.0, 20.0)
 lorenz_ic = (x=0.0, y=0.0, z=0.0)
 lotka_ic = (x=1.0, y=1.0)
