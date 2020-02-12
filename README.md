@@ -66,22 +66,22 @@ https://github.com/JuliaDiffEq/ModelingToolkit.jl/issues/36#issuecomment-5362213
 using NamedViewVectors
 using DifferentialEquations
 
-function lorenz!(du, u, (p, f), t)
+function lorenz!(du, u, p, t)
     du.x = p.σ*(u.y - u.x)
-    du.y = u.x*(p.ρ - u.z) - u.y + f
+    du.y = u.x*(p.ρ - u.z) - u.y + p.f
     du.z = u.x*u.y - p.β*u.z
     return nothing
 end
 
-function lotka!(du, u, (p, f), t)
-    du.x =  p.α*u.x - p.β*u.x*u.y + f
+function lotka!(du, u, p, t)
+    du.x =  p.α*u.x - p.β*u.x*u.y + p.f
     du.y = -p.γ*u.y + p.δ*u.x*u.y
     return nothing
 end
 
 function composed!(du, u, p, t)
-    lorenz!(du.lorenz, u.lorenz, ((β=p.β, p.lorenz...), u.lotka.x), t)
-    lotka!(du.lotka, u.lotka, ((β=p.β, p.lotka...), u.lorenz.x), t)
+    lorenz!(du.lorenz, u.lorenz, (β=p.β, f=u.lotka.x, p.lorenz...), t)
+    lotka!(  du.lotka,  u.lotka, (β=p.β, f=u.lorenz.x, p.lotka...), t)
     return nothing
 end
 
