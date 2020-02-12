@@ -66,6 +66,7 @@ https://github.com/JuliaDiffEq/ModelingToolkit.jl/issues/36#issuecomment-5362213
 using NamedViewVectors
 using DifferentialEquations
 
+
 function lorenz!(du, u, p, t)
     du.x = p.σ*(u.y - u.x)
     du.y = u.x*(p.ρ - u.z) - u.y + p.f
@@ -85,17 +86,18 @@ function composed!(du, u, p, t)
     return nothing
 end
 
-lorenz_p = (σ=1.0, ρ=1.0)
-lotka_p = (α=1.0, γ=3.1, δ=0.5)
-p = (β=1.0, lorenz=lorenz_p, lotka=lotka_p)
 
-tspan = (0.0, 20.0)
+lorenz_p = (σ=1.0, ρ=1.0)
 lorenz_ic = (x=0.0, y=0.0, z=0.0)
+
+lotka_p = (α=1.0, γ=3.1, δ=0.5)
 lotka_ic = (x=1.0, y=1.0)
 
-u₀ = NamedViewVector{Float64}((lorenz=lorenz_ic, lotka=lotka_ic))
+comp_p = (β=1.0, lorenz=lorenz_p, lotka=lotka_p)
+comp_ic = NamedViewVector{Float64}((lorenz=lorenz_ic, lotka=lotka_ic))
 
-prob = ODEProblem(composed!, u₀, tspan, p)
+
+prob = ODEProblem(composed!, comp_ic, (0.0, 20.0, comp_p)
 sol = solve(prob, Tsit5())
 ```
 
