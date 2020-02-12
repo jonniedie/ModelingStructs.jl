@@ -97,7 +97,7 @@ comp_p = (β=1.0, lorenz=lorenz_p, lotka=lotka_p)
 comp_ic = NamedViewVector{Float64}((lorenz=lorenz_ic, lotka=lotka_ic))
 
 
-prob = ODEProblem(composed!, comp_ic, (0.0, 20.0, comp_p)
+prob = ODEProblem(composed!, comp_ic, (0.0, 20.0), comp_p)
 sol = solve(prob, Tsit5())
 ```
 
