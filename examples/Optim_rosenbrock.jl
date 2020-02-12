@@ -1,5 +1,4 @@
 using Optim
-using ForwardDiff
 using NamedViewVectors
 
 include("..\\patches\\Optim.jl")
