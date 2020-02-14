@@ -2,12 +2,18 @@ data(x) = getfield(x, :data)
 vector(x) = getfield(x, :vector)
 
 
+SingleView{T} = SubArray{T,0,Array{T,1},Tuple{Int64},true} where T
+
 struct ViewingNamedTuple{K,T}
     data::NamedTuple{K,T}
 end
 ViewingNamedTuple(; kwargs...) = ViewingNamedTuple((; kwargs...))
 
-Base.getproperty(vnt::ViewingNamedTuple, key::Symbol) = getproperty(data(vnt), key)[1]
+
+Base.getproperty(vnt::ViewingNamedTuple, key::Symbol) = _getprop(getproperty(data(vnt), key)) #[1]
+
+_getprop(elem::SingleView) = elem[1]
+_getprop(elem) = elem
 
 function Base.setproperty!(vnt::ViewingNamedTuple, key::Symbol, val)
     # d = getfield(vnt, :data)
@@ -29,7 +35,7 @@ Base.values(vnt::ViewingNamedTuple) = values(data(vnt))
 function namedtuple(vnt::ViewingNamedTuple)
     data = []
     for (key, val) in zip(keys(vnt), values(vnt))
-        val = val[1]
+        # val = val[1]
         if val isa ViewingNamedTuple
             val = namedtuple(val)
         end
@@ -38,19 +44,24 @@ function namedtuple(vnt::ViewingNamedTuple)
     return (; data...)
 end
 
+Base.promote_rule(::Type{ViewingNamedTuple}, ::Type{NamedTuple{K,T}}) where {K,T} = ViewingNamedTuple{K,T}
+Base.convert(::Type{ViewingNamedTuple}, x::NamedTuple) =  ViewingNamedTuple(x)
+
 
 function attached!(vect::Vector{T}, nt::NamedTuple) where {T}
     p = []
     for (key, val) in zip(keys(nt), values(nt))
-        v = attached!(vect, val)
-        push!(p, key => v)
+        push!(p, key => attached!(vect, val))
     end
-    return [ViewingNamedTuple(; p...)]
+    return ViewingNamedTuple(; p...)
 end
-function attached!(vect::Vector{T}, arr::AbstractArray) where {T}
+function attached!(vect::Vector{T}, arr::AbstractArray{A}) where {T, A}
     len = length(vect)
-    push!(vect, arr...)
-    return [@view vect[len+1:length(vect)]]
+    v = [attached!(vect, arr[1])]
+    for idx in 2:length(arr)
+        push!(v, attached!(vect, arr[idx]))
+    end
+    return v
 end
 function attached!(vect::Vector{T}, val) where {T}
     push!(vect, convert(T, val))
@@ -66,6 +77,14 @@ function Base.show(io::IO, ::MIME"text/plain", vnt::ViewingNamedTuple)
     show(io, namedtuple(vnt))
     return nothing
 end
+function Base.show(io::IO, ::Type{<:ViewingNamedTuple})
+    print(io, "ViewingNamedTuple")
+    return nothing
+end
+function Base.show(io::IO, ::MIME"text/plain", ::Type{<:ViewingNamedTuple{K,T}}) where {K,T}
+    print(io, "ViewingNamedTuple", K, T)
+    return nothing
+end
 
 
 struct NamedViewVector{T,K,P} <: AbstractVector{T}
@@ -74,7 +93,7 @@ struct NamedViewVector{T,K,P} <: AbstractVector{T}
 end
 function NamedViewVector{T}(nt::NamedTuple) where {T}
     vector = T[]
-    data = attached!(vector, nt)[1]
+    data = attached!(vector, nt) #[1]
     return NamedViewVector{T,typeof(data).parameters...}(data, vector)
 end
 
