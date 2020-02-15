@@ -34,8 +34,8 @@ Base.values(vnt::ViewingNamedTuple) = values(data(vnt))
 
 function namedtuple(vnt::ViewingNamedTuple)
     data = []
-    for (key, val) in zip(keys(vnt), values(vnt))
-        # val = val[1]
+    for key in keys(vnt)
+        val = getproperty(vnt, key)
         if val isa ViewingNamedTuple
             val = namedtuple(val)
         end
