@@ -1,8 +1,6 @@
-using Optim
-
 # I made a pull request for this change to be made in Optim. We'll see where that goes. If
 #   it doesn't get merged, I'll have to make Optim a dependency and put this in src.
-function Optim.initial_state(method::IPNewton, options, d::TwiceDifferentiable, constraints::TwiceDifferentiableConstraints, initial_x::AbstractArray{T}) where T
+function Optim.initial_state(method::IPNewton, options, d::TwiceDifferentiable, constraints::TwiceDifferentiableConstraints, initial_x::ModelingStruct{T}) where T
     # Check feasibility of the initial state
     mc = Optim.nconstraints(constraints)
     constr_c = Array{T}(undef, mc)
