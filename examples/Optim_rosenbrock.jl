@@ -1,5 +1,5 @@
-using Optim
 using ModelingStructs
+using Optim
 
 
 rosen(u) = (1.0 - u.x)^2 + 100.0 * (u.y - u.x^2)^2
