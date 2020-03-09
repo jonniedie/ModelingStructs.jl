@@ -3,22 +3,26 @@
     ms = ModelingStruct{T}(nt::NamedTuple) where {T}
 
 A mutable struct-like data type with homogeneous data type T that can be accessed like a
-    vector or a struct. For a more convenient constructor, see `mstruct`.
+    vector or a struct. Useful for modeling tasks such as differential equations or
+    mathematical optimization that operate internally on data as a flat vector while calling
+    user functions that could often be better expressed if the data was a named tuple.
+    For a more convenient constructor, see `mstruct`.
 
 # Examples
 
 ```julia-repl
-julia> Polar = NamedTuple{(:r, :θ)};
+julia> c = (a=2, b=[1, 2]);
 
-julia> zpk_nt = (z=Polar.([(2,1), (3,2)]), p=Polar.([(5, 5)]), k=5)
+julia> p = (a=1, b=[2, 1, 4], c=c)
 
-julia> ms = ModelingStruct{Float64}(zpk_nt)
-ModelingStruct(z = NamedTuple{(:r, :θ),Tuple{Float64,Float64}}[(r = 2.0, θ = 1.0), (r = 3.0, θ = 2.0)], p = NamedTuple{(:r, :θ),Tuple{Float64,Float64}}[(r = 5.0, θ = 5.0)], k = 5.0)
+julia> ms = ModelingStruct{Float32}(p)
+ModelingStruct(a = 1.0f0, b = Float32[2.0, 1.0, 4.0], c = (a = 2.0f0, b = Float32[1.0, 2.0]))
 
-julia> ms.z[1].r = 20;
+julia> ms.c.a = 4; ms
+ModelingStruct(a = 1.0f0, b = Float32[2.0, 1.0, 4.0], c = (a = 4.0f0, b = Float32[1.0, 2.0]))
 
-julia> ms
-ModelingStruct(z = NamedTuple{(:r, :θ),Tuple{Float64,Float64}}[(r = 20.0, θ = 1.0), (r = 3.0, θ = 2.0)], p = NamedTuple{(:r, :θ),Tuple{Float64,Float64}}[(r = 5.0, θ = 5.0)], k = 5.0)
+julia> ms[5]
+4.0f0
 ```
 """
 struct ModelingStruct{T,K,P} <: AbstractVector{T}
@@ -44,7 +48,7 @@ ModelingStruct(ms::ModelingStruct) = deepcopy(ms)
 """
     ms = mstruct(type=Float64; kwargs...)
 
-Convenience constructor for creating ModelingStructs.
+Convenience constructor for creating `ModelingStructs`.
 
 # Examples
 ```julia-repl
