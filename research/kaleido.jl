@@ -1,4 +1,3 @@
-
 # struct MStruct{K,T} <: AbstractVector{T}
 #     data::K
 #     vect::Vector{PropertyLens}
