@@ -1,6 +1,6 @@
 # ModelingStructs
 
- Vectors that can be accessed like arbitrarily nested structs.
+ Mutable, named-tuple-ish things that act like vectors when they need to.
 
 ## Usage
 ```ModelingStructs``` can be instantiated with the ```mstruct``` function. The default argument
