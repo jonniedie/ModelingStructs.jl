@@ -1,4 +1,4 @@
-# using Optim
+using Optim
 using NLSolversBase
 
 # This hasn't been submitted as a PR
