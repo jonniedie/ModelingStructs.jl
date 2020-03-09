@@ -1,8 +1,6 @@
 using Optim
 using ModelingStructs
 
-include("..\\patches\\Optim.jl")
-include("..\\patches\\NLSolversBase.jl")
 
 rosen(u) = (1.0 - u.x)^2 + 100.0 * (u.y - u.x^2)^2
 u₀ = mstruct(x=0, y=0)
