@@ -1,14 +1,14 @@
 using Optim
-using NamedViewVectors
+using ModelingStructs
 
 include("..\\patches\\Optim.jl")
-
+include("..\\patches\\NLSolversBase.jl")
 
 rosen(u) = (1.0 - u.x)^2 + 100.0 * (u.y - u.x^2)^2
-u₀ = NamedViewVector{Float64}((x=0, y=0))
+u₀ = mstruct(x=0, y=0)
 
-lb = NamedViewVector{Float64}((x=-0.5, y=-0.5))
-ub = NamedViewVector{Float64}((x=0.5, y=0.5))
+lb = mstruct(x=-0.5, y=-0.5)
+ub = mstruct(x=0.5, y=0.5)
 
 
 df = TwiceDifferentiable(rosen, u₀; autodiff=:forward)
