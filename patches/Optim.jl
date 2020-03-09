@@ -1,8 +1,4 @@
 using Optim
-using NLSolversBase
-
-# This hasn't been submitted as a PR
-NLSolversBase.x_of_nans(ms::ModelingStruct{T}, Tf=T) where T = fill!(similar(ms, Tf), Tf(NaN))
 
 # I made a pull request for this change to be made in Optim. We'll see where that goes. If
 #   it doesn't get merged, I'll have to make Optim a dependency and put this in src.
