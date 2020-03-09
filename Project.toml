@@ -2,3 +2,12 @@ name = "ModelingStructs"
 uuid = "bafcc131-00d0-50ad-b130-a072484f77e3"
 authors = ["Jonnie Diegelman <47193959+jonniedie@users.noreply.github.com>"]
 version = "0.1.0"
+
+[deps]
+Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+
+[extras]
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
+
+[targets]
+examples = ["Optim"]
