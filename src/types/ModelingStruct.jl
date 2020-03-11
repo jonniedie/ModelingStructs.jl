@@ -1,4 +1,6 @@
-
+# TODO: Implement broadcasting similar to https://github.com/JuliaDiffEq/LabelledArrays.jl/blob/master/src/larray.jl
+#       so f.(x) where x is a ModelingStruct returns a ModelingStruct. Need to figure out
+#       what it means to initialize empty ModelingStruct. Maybe StaticArrays will help?
 """
     ms = ModelingStruct{T}(nt::NamedTuple) where {T}
 
