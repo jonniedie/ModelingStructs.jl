@@ -110,7 +110,7 @@ Notice how cleanly the ```composed!``` function can unpack parameters and initia
 
 
 ## Related Work
-There are a few other packages that provide the same basic functionality as `ModellingStructs`. None (that I can tell) allow for nested structures, including fields with vectors of structures, which is important especially for composing differential equations together. It's possible that these can be used in conjunction with [RecursiveArrayTools](https://github.com/JuliaDiffEq/RecursiveArrayTools.jl) to get this functionality, but it seemed like that would be as much work as just writing this package from scratch, so I didn't bother.
+There are a few other packages that provide the same basic functionality as `ModelingStructs`. None (that I can tell) allow for nested structures, including fields with vectors of structures, which is important especially for composing differential equations together. It's possible that these can be used in conjunction with [RecursiveArrayTools](https://github.com/JuliaDiffEq/RecursiveArrayTools.jl) to get this functionality, but it seemed like that would be as much work as just writing this package from scratch, so I didn't bother.
 
 [LabelledArrays](https://github.com/JuliaDiffEq/LabelledArrays.jl):
 `LVector`s are the same basic idea, with similar construction by keyword or named tuple. Additionally, there is support for higher-dimensional `LArrays` and convenience macros for defining types. The main downside is they cannot be nested.
