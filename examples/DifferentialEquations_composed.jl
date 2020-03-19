@@ -33,7 +33,7 @@ function composed!(du, u, p, t)
 end
 
 comp_p = (β=8/3, lorenz=lorenz_p, lotka=lotka_p)
-comp_ic = mstruct(lorenz=lorenz_ic, lotka=lotka_ic)
+comp_ic = MStruct(lorenz=lorenz_ic, lotka=lotka_ic)
 
 
 # Create and solve problem
