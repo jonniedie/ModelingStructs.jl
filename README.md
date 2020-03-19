@@ -3,15 +3,14 @@
  Mutable, named-tuple-ish things that act like vectors when they need to.
 
 ## Usage
-```ModelingStructs``` can be instantiated with the ```mstruct``` function. The default argument
-type is a Float64, but can be set via the first positional, non-keyword argument to ```mstruct```
-.
+```ModelingStructs``` can be instantiated with the ```MStruct``` alias as well. The default argument
+type is a Float64, but can be customized via:
 
 ```julia
 using ModelingStructs
 
 c = (a=2, b=[1, 2])
-ms = mstruct(Float32, a=1, b=[2, 1, 4], c=c)
+ms = MStruct{Float32}(a=1, b=[2, 1, 4], c=c)
 ```
 
 returns a
@@ -58,7 +57,7 @@ julia>  foreach(x -> println(x^2), ms)
 ```
 
 ## What is this useful for?
-```ModelingStructs``` are useful for composing models together on the fly. The main targets are differential equations and optimization, but really anything that requires flat vectors is fair game (as long as it is written in Julia all the way down).
+```ModelingStructs``` are useful for composing models together on the fly. The main targets are differential equations and optimization, but really anything that requires flat vectors is fair game.
 
 ### Differential equation example
 Example taken from:
@@ -99,7 +98,7 @@ function composed!(du, u, p, t)
 end
 
 comp_p = (β=8/3, lorenz=lorenz_p, lotka=lotka_p)
-comp_ic = mstruct(lorenz=lorenz_ic, lotka=lotka_ic)
+comp_ic = MStruct(lorenz=lorenz_ic, lotka=lotka_ic)
 
 
 # Create and solve problem
