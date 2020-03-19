@@ -108,3 +108,13 @@ sol = solve(prob, Tsit5())
 ```
 
 Notice how cleanly the ```composed!``` function can unpack parameters and initial conditions, pass variables from one function to another, and maintain top-level shared parameters. No array index juggling in sight. This is especially useful for large models as it becomes harder to keep track top-level model array position when adding new or deleting old components from the model. We could go further and compose ```composed!``` with other components ad (practically) infinitum with no mental bookkeeping.
+
+
+## Related Work
+There are a few other packages that provide the same basic functionality as `ModellingStructs`. None (that I can tell) allow for nested structures, including fields with vectors of structures, which is important especially for composing differential equations together. It's possible that these can be used in conjunction with [RecursiveArrayTools](https://github.com/JuliaDiffEq/RecursiveArrayTools.jl) to get this functionality, but it seemed like that would be as much work as just writing this package from scratch, so I didn't bother.
+
+[LabelledArrays](https://github.com/JuliaDiffEq/LabelledArrays.jl):
+`LVector`s are the same basic idea, with similar construction by keyword or named tuple. Additionally, there is support for higher-dimensional `LArrays` and convenience macros for defining types. The main downside is they cannot be nested.
+
+[StaticArrays](https://juliaarrays.github.io/StaticArrays.jl):
+`FieldVector` is an abstract type that can be subtyped by custom user types. The benefit here is that allowing users to define their own custom struct allows users to take advantage of multiple dispatch more easily. The main downside is that the syntax for defining compatible `struct`s is slightly more cumbersome and boilerplatey.
