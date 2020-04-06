@@ -79,7 +79,7 @@ function lorenz!(D, u, (p, f), t)
     return nothing
 end
 
-lorenz_p = (σ=10.0, ρ=28.0)
+lorenz_p = (σ=10.0, ρ=28.0, β=8/3)
 lorenz_ic = MStruct(x=0.0, y=0.0, z=0.0)
 
 
@@ -93,7 +93,7 @@ function lotka!(D, u, (p, f), t)
     return nothing
 end
 
-lotka_p = (α=1.0, γ=1.1, δ=0.5)
+lotka_p = (α=2/3, β=4/3, γ=1.0, δ=1.0)
 lotka_ic = MStruct(x=1.0, y=1.0)
 
 
@@ -101,12 +101,12 @@ lotka_ic = MStruct(x=1.0, y=1.0)
 function composed!(D, u, p, t)
     @unpack lorenz, lotka = u
     
-    lorenz!(D.lorenz, lorenz, ((β=p.β, p.lorenz...), lotka.x), t)
-    lotka!(D.lotka, lotka, ((β=p.β, p.lotka...), lorenz.x), t)
+    lorenz!(D.lorenz, lorenz, (p.lorenz, lotka.x), t)
+    lotka!(D.lotka, lotka, (p.lotka, lorenz.x), t)
     return nothing
 end
 
-comp_p = (β=8/3, lorenz=lorenz_p, lotka=lotka_p)
+comp_p = (lorenz=lorenz_p, lotka=lotka_p)
 comp_ic = MStruct(lorenz=lorenz_ic, lotka=lotka_ic)
 
 
@@ -115,7 +115,7 @@ prob = ODEProblem(composed!, comp_ic, (0.0, 20.0), comp_p)
 sol = solve(prob, Tsit5())
 ```
 
-Notice how cleanly the ```composed!``` function can pass variables from one function to another and maintain top-level shared parameters. No array index juggling in sight. This is especially useful for large models as it becomes harder to keep track top-level model array position when adding new or deleting old components from the model. We could go further and compose ```composed!``` with other components ad (practically) infinitum with no mental bookkeeping.
+Notice how cleanly the ```composed!``` function can pass variables from one function to another with no array index juggling in sight. This is especially useful for large models as it becomes harder to keep track top-level model array position when adding new or deleting old components from the model. We could go further and compose ```composed!``` with other components ad (practically) infinitum with no mental bookkeeping.
 
 The main benefit, however, is now our differential equations are unit testable. Both ```lorenz``` and ```lotka``` can be run as their own ```ODEProblem``` with ```f``` set to zero to see the unforced response.
 
