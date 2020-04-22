@@ -1,6 +1,7 @@
-# ModelingStructs
 
 NOTE: Depreciated in favor of [ComponentArrays.jl](https://github.com/jonniedie/ComponentArrays.jl). Go there instead.
+
+# ModelingStructs
 
  Mutable, named-tuple-ish things that act like vectors when they need to.
 
